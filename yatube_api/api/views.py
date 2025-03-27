@@ -31,7 +31,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly
     ]
 
