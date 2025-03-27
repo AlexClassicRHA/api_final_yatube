@@ -3,7 +3,7 @@ from rest_framework import pagination, permissions, viewsets, mixins
 from rest_framework.filters import SearchFilter
 
 from posts.models import Follow, Group, Post, User, Post, Comment
-from .permissions import OwnerOrReadOnly, IsOwnerOrReadOnly  
+from .permissions import OwnerOrReadOnly, IsOwnerOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer, UserSerializer)
 
@@ -31,8 +31,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [
-      permissions.IsAuthenticatedOrReadOnly,
-      IsOwnerOrReadOnly
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly
     ]
 
     def get_queryset(self):
