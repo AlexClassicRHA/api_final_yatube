@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import pagination, permissions, viewsets, mixins
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from posts.models import Follow, Group, Post, User, Post, Comment
 from .permissions import OwnerOrReadOnly, IsOwnerOrReadOnly
