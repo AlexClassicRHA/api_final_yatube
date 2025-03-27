@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import pagination, permissions, viewsets, mixins
 from rest_framework.filters import SearchFilter
 
-from posts.models import Follow, Group, Post, User
+from posts.models import Follow, Group, Post, User, Post, Comment
 from .permissions import OwnerOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer, UserSerializer)
@@ -30,11 +30,15 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = (OwnerOrReadOnly,)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
-        return Comment.objects.filter(post_id=post_id)
+        return (
+            Comment.objects
+            .filter(post_id=post_id)
+            .order_by('-created')
+        )
 
     def get_post(self):
         return get_object_or_404(
@@ -43,7 +47,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         post = get_object_or_404(
-          Post, id=self.kwargs.get('post_id')
+            Post, id=self.kwargs.get('post_id')
         )
         serializer.save(author=self.request.user, post=post)
 
